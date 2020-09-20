@@ -99,7 +99,7 @@ class Incrementer extends React.Component {
         // On déclare que n est le nombre de départ dans l'état
         this.state = { n: props.start, timer: null };
         // Pour optimiser les performances, on déclare les fonction appelées dans le render() comme ceci
-        this.toggle = this.toggle.bind(this);
+        // this.toggle = this.toggle;
         this.reset = this.reset.bind(this);
     }
 
@@ -141,7 +141,7 @@ class Incrementer extends React.Component {
         return this.state.timer ? 'Pause' : 'Lecture';
     }
 
-    toggle() {
+    toggle = () => {
         return this.state.timer ? this.pause() : this.play();
     }
 
@@ -192,4 +192,3 @@ function Home() {
     </div>
 }
 
-/* PARTIE EVENEMENT */
