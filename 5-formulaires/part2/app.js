@@ -3,6 +3,7 @@
 function Field({ name, value, onChange, children }) {
     return <div className="form-group">
         <label htmlFor={name}>{children}</label>
+        {/* defaultValue : Remplace value si on a pas besoin de suivre les changements d'état de l'input */}
         <input type="text" value={value} onChange={onChange} id={name} name={name} className="form-control" />
     </div>
 }
@@ -55,7 +56,7 @@ class Home extends React.Component {
         return <form className="container" onSubmit={this.handleSubmit}>
             <Field name="nom" value={this.state.nom} onChange={this.handleChange}>Nom</Field>
             <Field name="prenom" value={this.state.prenom} onChange={this.handleChange}>Prénom</Field>
-            <Checkbox name="newsletter" value={this.state.newsletter} onChange={this.handleChange}>S'abonnr à la newsletter</Checkbox>
+            <Checkbox name="newsletter" value={this.state.newsletter} onChange={this.handleChange}>S'abonner à la newsletter</Checkbox>
             <div className="form-group">
                 <button className="btn btn-primary">Envoyer</button>
             </div>
