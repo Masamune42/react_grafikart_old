@@ -24,19 +24,29 @@ function ProductCategoryRow({ category }) {
 }
 
 class SearchBar extends React.Component {
+    constructor(props) {
+        super(props)
+        this.handlefilterTextChange = this.handlefilterTextChange.bind(this)
+        this.handleInStockChange = this.handleInStockChange.bind(this)
+    }
 
     handlefilterTextChange(e) {
-        
+        this.props.onFilterTextChange(e.target.value)
+    }
+
+    handleInStockChange(e) {
+        this.props.onStockChange(e.target.checked)
     }
 
     render() {
         const { filterText, inStockOnly } = this.props
-        return <div>
+        return <div className="mb-3">
             <div className="form-group">
-                <input type="text" value={filterText} className="form-control" placeholder="Rechercher" />
+                {/* On fait remonter au parant l'information rentrée avec le onChange */}
+                <input type="text" value={filterText} className="form-control" placeholder="Rechercher" onChange={this.handlefilterTextChange} />
             </div>
             <div className="form-check">
-                <input type="checkbox" checked={inStockOnly} className="form-check-input" id="stock" />
+                <input type="checkbox" checked={inStockOnly} className="form-check-input" id="stock" onChange={this.handleInStockChange} />
                 <label htmlFor="stock" className="form-check-label">Produit en stock</label>
             </div>
         </div>
@@ -44,13 +54,21 @@ class SearchBar extends React.Component {
 }
 
 // Fonction créant la table de produits
-function ProductTable({ products }) {
+function ProductTable({ products, inStockOnly, filterText }) {
     // Tableau qui va contenir toutes les lignes à afficher
     const rows = []
     // Représente la catégorie de l'article inséré
     let lastCategory = null
     // Pour chaque article
     products.forEach(product => {
+        // Si le produit n'est pas en stock (vérif : case cochée + la variable stocked de l'article = false)
+        // OU si ne trouve pas le texte recherché dans le nom de l'article, on return = aucun article ne correspond, donc ne ne l'affiche pas
+        if (
+            (inStockOnly && !product.stocked) ||
+            (!product.name.toLowerCase().includes(filterText.toLowerCase()))
+        ) {
+            return
+        }
         // Si la catégorie du dernier article inséré est différente
         if (product.category !== lastCategory) {
             // On récupère sa nouvelle catégorie
@@ -76,16 +94,15 @@ function ProductTable({ products }) {
 }
 
 class FilterableProductTable extends React.Component {
-
     constructor(props) {
         super(props)
         this.state = {
-            filterText: 'Foot',
+            filterText: '',
             inStockOnly: false
         }
         this.handleFilterChange = this.handleFilterChange.bind(this)
         this.handleInStockChange = this.handleInStockChange.bind(this)
-    } handl
+    }
 
     handleFilterChange(filterText) {
         this.setState({ filterText })
@@ -102,10 +119,14 @@ class FilterableProductTable extends React.Component {
             <SearchBar
                 filterText={this.state.filterText}
                 inStockOnly={this.state.inStockOnly}
-                onFilterTextChange={this.state.handleInStockChange}
-                onStockChange={this.state.handleInStockChange}
+                onFilterTextChange={this.handleFilterChange}
+                onStockChange={this.handleInStockChange}
             />
-            <ProductTable products={products} />
+            <ProductTable
+                products={products}
+                filterText={this.state.filterText}
+                inStockOnly={this.state.inStockOnly}
+            />
         </React.Fragment>
     }
 }
