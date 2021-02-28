@@ -15,3 +15,8 @@ Présente sur https://fr.reactjs.org/
 - npm run build : Permet de générer les dossiers statiques. Avec des fichiers minifiés que l'on peut envoyer sur un serveur
 - npm test : Tests unitaires
 - npm eject : Permet de déstructurer le projet pour gérer la structure en profondeur.
+
+## Parcel
+- npx parcel index.html : Permet de lancer un serveur de développement
+- npx parcel build index.html : Permet de construire les fichiers pour un serveur
+- Fast refresh : permet de rafraichir la page en gardant en mémoire l'état des éléments
